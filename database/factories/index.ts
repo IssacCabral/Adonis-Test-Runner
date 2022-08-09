@@ -13,6 +13,8 @@ export const UserFactory = Factory.define(User, ({faker}) => {
     return {
         email: faker.internet.email(),
         password: faker.internet.password(),
-        fullName: faker.name.findName()
+        fullName: faker.name.fullName()
     }
 })
+    .relation('posts', () => PostFactory)
+    .build()
