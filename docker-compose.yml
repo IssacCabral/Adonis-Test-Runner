@@ -21,10 +21,10 @@ services:
     build:
       context: ./Docker/db
     environment:
-      MYSQL_ROOT_PASSWORD: root
+      MYSQL_ROOT_PASSWORD: root2
       MYSQL_DATABASE: adonis_test_runner
     ports:
-      - "3306:3306"
+      - "3306:3306"  
     volumes:
       - db-data:/var/lib/mysql
     networks:

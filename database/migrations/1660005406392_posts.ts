@@ -13,6 +13,8 @@ export default class extends BaseSchema {
         .inTable('users')
 
       table.string('title').notNullable()  
+      table.text('content').notNullable()
+      table.json('cover_image').nullable()
 
       
 
