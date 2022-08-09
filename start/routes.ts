@@ -12,6 +12,8 @@ Route.get('/healthy', async ({ response }: HttpContextContract) => {
   })
 })
 
+Route.resource('/posts', 'PostsController')
+
 Route.get('/', async () => {
   return { hello: 'world' }
 })
