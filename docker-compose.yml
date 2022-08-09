@@ -1,0 +1,34 @@
+version: "3"
+
+networks:
+  test_projects:
+    external: true
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: ./Docker/api/Dockerfile
+    ports:
+      - "3333:3333"
+    volumes:
+      - .:/app
+    networks:
+      - test_projects
+    depends_on:
+      - mysql
+  mysql:
+    build:
+      context: ./Docker/db
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: adonis_test_runner
+    ports:
+      - "3306:3306"
+    volumes:
+      - db-data:/var/lib/mysql
+    networks:
+      - test_projects
+
+volumes:
+  db-data:
