@@ -6,7 +6,7 @@ export default class Post extends BaseModel {
   @column({ isPrimary: true })
   public id: number
 
-  @column({serializeAs: null})
+  @column()
   public userId: number
 
   @column()

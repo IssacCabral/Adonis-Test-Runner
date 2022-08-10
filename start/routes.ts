@@ -12,7 +12,13 @@ Route.get('/healthy', async ({ response }: HttpContextContract) => {
   })
 })
 
-Route.resource('/posts', 'PostsController')
+Route.resource('/posts', 'PostsController').middleware({
+  store: ['auth']
+})
+
+Route.resource('/users', 'UsersController')
+
+Route.post('/login', 'AuthController.login')
 
 Route.get('/', async () => {
   return { hello: 'world' }

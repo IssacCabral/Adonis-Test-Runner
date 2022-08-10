@@ -10,7 +10,7 @@ export default class PostsController {
     return Post.query().preload('author').orderBy('id', 'desc').paginate(page, per_page)
   }
 
-  public async store({request, response}: HttpContextContract) {
+  public async store({request, response, auth}: HttpContextContract) {
     const {title, content} = await request.validate({
       schema: schema.create({
         title: schema.string([rules.trim(), rules.escape()]),
@@ -18,8 +18,18 @@ export default class PostsController {
       })
     })
 
-    const post = await Post.create({title, content})
+    // const post = await Post.create({title, content})
+    // post.$setRelated('author', auth.user!)
+    const post = new Post()
 
-    return response.created(post)
+    post.fill({
+      title,
+      content,
+      userId: auth.user!.id
+    })
+
+    await post.save()
+
+    return response.created({data: post})
   }
 }
