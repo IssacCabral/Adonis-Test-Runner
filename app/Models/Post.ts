@@ -2,6 +2,11 @@ import { DateTime } from 'luxon'
 import { BaseModel, belongsTo, BelongsTo, column } from '@ioc:Adonis/Lucid/Orm'
 import User from './User'
 
+import {
+  attachment,
+  AttachmentContract
+} from '@ioc:Adonis/Addons/AttachmentLite'
+
 export default class Post extends BaseModel {
   @column({ isPrimary: true })
   public id: number
@@ -14,6 +19,9 @@ export default class Post extends BaseModel {
 
   @column()
   public content: string
+
+  @attachment()
+  public cover_image: AttachmentContract | null
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime

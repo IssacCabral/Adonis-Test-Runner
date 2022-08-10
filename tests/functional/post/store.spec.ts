@@ -2,6 +2,8 @@ import Database from '@ioc:Adonis/Lucid/Database'
 import { test } from '@japa/runner'
 import { UserFactory } from 'Database/factories'
 
+import Application from '@ioc:Adonis/Core/Application'
+
 test.group('Posts store', (group) => {
   group.each.setup(async () => {
     await Database.beginGlobalTransaction()
@@ -46,6 +48,34 @@ test.group('Posts store', (group) => {
       title: 'Hello World',
       content: 'Hello, everyone. This is testing 101'
     })
+
+    response.assertStatus(201)
+    response.assertBodyContains({
+      data: {
+        title: 'Hello World',
+        content: 'Hello, everyone. This is testing 101',
+        user_id: user.id
+      }
+    })
+
+  })
+
+  test('create a post with cover image', async ({ client, route }) => {
+    const user = await UserFactory.query().create()
+
+    /**
+     * Esse método de fields faz uma solicitação de várias partes ao servidor e, em seguida,
+     * podemos anexar também para que eu possa dizer que quero fazer upload de uma imagem de capa
+     * 
+     */
+    const response = await client
+      .post(route('PostsController.store'))
+      .loginAs(user)
+      .fields({
+        title: 'Hello World',
+        content: 'Hello, everyone. This is testing 101'
+      })
+      .file('cover_image', Application.makePath('utils/paisagem.jpg'))
 
     response.assertStatus(201)
     response.assertBodyContains({

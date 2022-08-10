@@ -1,3 +1,4 @@
+import { Attachment } from '@ioc:Adonis/Addons/AttachmentLite'
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import {schema, rules} from '@ioc:Adonis/Core/Validator'
 import Post from 'App/Models/Post'
@@ -11,10 +12,11 @@ export default class PostsController {
   }
 
   public async store({request, response, auth}: HttpContextContract) {
-    const {title, content} = await request.validate({
+    const {title, content, cover_image} = await request.validate({
       schema: schema.create({
         title: schema.string([rules.trim(), rules.escape()]),
-        content: schema.string([rules.trim()])
+        content: schema.string([rules.trim()]),
+        cover_image: schema.file.optional({extnames: ['jpg', 'jpeg', 'png'], size: '1mb'})
       })
     })
 
@@ -25,7 +27,8 @@ export default class PostsController {
     post.fill({
       title,
       content,
-      userId: auth.user!.id
+      userId: auth.user!.id,
+      cover_image: cover_image ? Attachment.fromFile(cover_image) : null
     })
 
     await post.save()
