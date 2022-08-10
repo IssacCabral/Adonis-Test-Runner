@@ -7,6 +7,6 @@ export default class PostsController {
     const page = 1
     const perPage = 20
 
-    return Post.query().preload('author').paginate(page, perPage)
+    return Post.query().preload('author').orderBy('id', 'desc').paginate(page, perPage)
   }
 }
