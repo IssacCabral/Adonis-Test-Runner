@@ -7,7 +7,9 @@ export const PostFactory = Factory.define(Post, ({faker}) => {
         title: faker.lorem.words(5),
         content: faker.lorem.paragraphs(3)
     }
-}).build()
+})
+    .relation('author', () => UserFactory)
+    .build()
 
 export const UserFactory = Factory.define(User, ({faker}) => {
     return {

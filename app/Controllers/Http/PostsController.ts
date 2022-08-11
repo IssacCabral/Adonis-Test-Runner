@@ -35,4 +35,12 @@ export default class PostsController {
 
     return response.created({data: post})
   }
+
+  public async show({request, response}: HttpContextContract){
+    const post = await Post.findOrFail(request.param('id'))
+    await post.load('author')
+    return {
+      data: post
+    }
+  }
 }

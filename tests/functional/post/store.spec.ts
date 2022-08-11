@@ -1,8 +1,7 @@
 import Database from '@ioc:Adonis/Lucid/Database'
+
 import { test } from '@japa/runner'
 import { UserFactory } from 'Database/factories'
-
-import Application from '@ioc:Adonis/Core/Application'
 import {file} from '@ioc:Adonis/Core/Helpers'
 
 test.group('Posts store', (group) => {
@@ -63,7 +62,7 @@ test.group('Posts store', (group) => {
 
   test('create a post with cover image', async ({ client, route }) => {
     const user = await UserFactory.query().create()
-
+    const {contents, name} = await file.generateJpg('800kb')
     /**
      * Esse método de fields faz uma solicitação de várias partes ao servidor e, em seguida,
      * podemos anexar também para que eu possa dizer que quero fazer upload de uma imagem de capa
@@ -76,7 +75,7 @@ test.group('Posts store', (group) => {
         title: 'Hello World',
         content: 'Hello, everyone. This is testing 101'
       })
-      .file('cover_image', Application.makePath('utils/paisagem.jpg'))
+      .file('cover_image', contents, {filename: name})
     
       
     // response.dumpBody()
